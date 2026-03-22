@@ -5,6 +5,7 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "procinfo.h"
 
 uint64
 sys_exit(void)
@@ -97,4 +98,15 @@ int mask;
 argint(0, &mask);
 myproc()->trace_mask = mask;
 return 0;
+}
+
+uint64 sys_procinfo(void) {
+  int pid;
+  uint64 infoptr;
+  
+  argint(0, &pid);
+  argaddr(1, &infoptr);
+  
+  extern int get_procinfo(int, uint64);
+  return get_procinfo(pid, infoptr);
 }
